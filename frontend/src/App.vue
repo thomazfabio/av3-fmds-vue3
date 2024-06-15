@@ -7,6 +7,19 @@
           <infoUser prop1="text" />
         </v-col>
       </v-row>
+      <v-divider></v-divider>
+      <v-row class="pa-0">
+
+        <v-col>
+          <v-list-item class="pa-0">
+            <v-list-item-title class="pt-3 pb-2 pl-2 pr-3">Gerenciamento</v-list-item-title>
+
+            <router-link to="collaborator" class="router-link-decoration-none"><v-list-item link title="Colaboradores"></v-list-item></router-link>
+          </v-list-item>
+
+        </v-col>
+
+      </v-row>
       <v-row>
         <v-col>
           <v-card class="mt-4" variant="text" rounded="0">
@@ -74,4 +87,8 @@ watch(switchTheme, () => {
 })
 </script>
 
-<style scoped></style>
+<style scoped>
+.router-link-decoration-none {
+  text-decoration: none;
+}
+</style>
