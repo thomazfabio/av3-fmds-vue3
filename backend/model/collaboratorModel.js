@@ -2,8 +2,8 @@ const connection = require('./db');
 
 const sqlInsert = 'INSERT INTO `collaborator`(`first_name`, `task_function`, `description`) VALUES (?, ?, ?)';
 
-async function insertCollaborator(name, task_function, description, callback) {
-    const values = [name, task_function, description];
+async function insertCollaborator(data, callback) {
+    const values = [data.name, data.function, data.description];
     connection.execute(sqlInsert, values, (err, result, fields) => {
         if (err instanceof Error) {
             console.log(err);
@@ -11,7 +11,6 @@ async function insertCollaborator(name, task_function, description, callback) {
             return;
         }
         console.log(result);
-        console.log(fields);
         callback(null, result, fields); // Chamando o callback com os resultados e campos
     });
 }
@@ -26,7 +25,6 @@ async function getAllCollaborator(callback) {
             return;
         }
         console.log(result);
-        console.log(fields);
         callback(null, result); // Chamando o callback com os resultados e campos
     });
 }
@@ -40,7 +38,6 @@ async function getCollaboratorById(id, callback) {
             return;
         }
         console.log(result);
-        console.log(fields);
         callback(null, result); // Chamando o callback com os resultados e campos
     });
 }
@@ -79,4 +76,4 @@ async function updateCollaboratorById(id, name, task_function, description, call
 
 
 
-module.exports = { insertCollaborator , getAllCollaborator, getCollaboratorById, deleteCollaboratorById, updateCollaboratorById};
+module.exports = { insertCollaborator, getAllCollaborator, getCollaboratorById, deleteCollaboratorById, updateCollaboratorById };

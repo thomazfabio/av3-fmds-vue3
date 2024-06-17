@@ -4,8 +4,8 @@ var { texto, insertCollaborator, getAllCollaborator, getCollaboratorById, delete
 
 // insert
 router.post('/', async (req, res) => {
-    const { name, task_function, description } = req.body;
-    insertCollaborator(name, task_function, description, (err, result, fields) => {
+    const data = req.body;
+    insertCollaborator(data, (err, result, fields) => {
         if (err) {
             res.status(500).send(err.message);
             return;
@@ -21,7 +21,7 @@ router.get('/', (req, res) => {
             res.status(500).send(err.message);
             return;
         }
-        res.send({ result, fields });
+        res.send({ result });
     });
 });
 
@@ -33,7 +33,7 @@ router.get('/:id', (req, res) => {
             res.status(500).send(err.message);
             return;
         }
-        res.send(result);
+        res.send({result});
     });
 });
 

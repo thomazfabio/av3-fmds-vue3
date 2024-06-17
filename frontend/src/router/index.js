@@ -20,15 +20,18 @@ const router = createRouter({
 const routes = router.options.routes
 // encontrar rota com path login e alterar
 routes.find((route, index) => {
-  if (route.path === '/dashboard') {
+  if (route.path === '/collaborator' || route.path === '/dashboard') {
     route.meta.requiresAuth = true
   }
 })
+
 //...
 
 router.beforeEach(async (to, from, next) => {
   const userStore = useUserStore(stores)
-  if (to.path === '/dashboard' && !await userStore.getIsLogged) {
+  //acessar meta da rota
+
+  if (to.meta.requiresAuth === true && !await userStore.getIsLogged) {
     next('/login')
   }
   else {
