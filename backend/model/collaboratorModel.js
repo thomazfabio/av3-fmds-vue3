@@ -60,8 +60,10 @@ async function deleteCollaboratorById(id, callback) {
 
 // função update by id
 const sqlUpdateById = 'UPDATE collaborator SET first_name = ?, task_function = ?, description = ? WHERE id = ?';
-async function updateCollaboratorById(id, name, task_function, description, callback) {
-    connection.execute(sqlUpdateById, [name, task_function, description, id], (err, result, fields) => {
+async function updateCollaboratorById(id, data, callback) {
+    const values = [data.name, data.task_function, data.description, id];
+    console.log(values);
+    connection.execute(sqlUpdateById, values, (err, result, fields) => {
         if (err instanceof Error) {
             console.log(err);
             callback(err, null, null); // Chamando o callback com o erro

@@ -31,7 +31,7 @@
                 </v-alert>
                 <!-- Card de novo colaborador -->
                 <v-card class="mb-4" v-if="newEnabled">
-                    <v-card-title>Novo colaborador</v-card-title>
+                    <v-card-title>{{ titleNewCollaborator }}</v-card-title>
                     <v-divider></v-divider>
                     <v-card-text class="pb-0 mt-4">
                         <v-row class="pb-0 mb-0">
@@ -47,8 +47,8 @@
                     </v-card-text>
                     <v-card-actions class="pt-0 mt-0">
                         <v-btn color="primary" @click="newCollaborator">Salvar</v-btn>
-                        <v-btn color="yellow" @click="newEnabled = false">fechar</v-btn>
-                        <v-btn color="red" @click="newEnabled = false">Cancelar</v-btn>
+                        <v-btn color="yellow" @click="closeNewEditCollaborator">fechar</v-btn>
+                        <v-btn color="red" @click="closeNewEditCollaborator">Cancelar</v-btn>
                     </v-card-actions>
                 </v-card>
                 <!-- ...  -->
@@ -86,7 +86,7 @@
                         <v-card-text>{{ "função: " + item.raw.exportData.function }}</v-card-text>
                         <v-card-text>{{ "descrição: " + item.raw.exportData.description }}</v-card-text>
                         <v-card-actions>
-                            <v-btn color="primary" @click="updateCollaborator(item.raw.exportData)">Editar</v-btn>
+                            <v-btn color="primary" @click="updateCollaborator(item.raw.exportData, 'update')">Editar</v-btn>
                             <v-btn color="yellow" @click="closseById(item.raw.exportData.id)">fechar</v-btn>
                             <v-btn color="red" @click="deleteCollaborator(item.raw.exportData.id)">Excluir</v-btn>
                         </v-card-actions>
@@ -110,17 +110,30 @@ const ckeckSearchAll = ref(false)
 const ckeckSearchByFunction = ref(false)
 const statusButtonEdit = ref(false)
 const statusButtonDelete = ref(false)
+const updateCollaboratorEnabled = ref(false)
 const collaborator = ref({
     name: '',
     function: '',
     description: ''
 })
+const titleNewCollaborator = ref('Novo colaborador')
 const alertStatus = computed(() => collaboratorStore.alert.show)
 const alertMsg = computed(() => collaboratorStore.alert.message)
 const alertType = computed(() => collaboratorStore.alert.type)
 
 
 const newCollaborator = () => {
+    if (updateCollaboratorEnabled.value) {
+        collaboratorStore.updateCollaborator(collaborator.value)
+        updateCollaboratorEnabled.value = false
+        titleNewCollaborator.value = 'Novo colaborador'
+        collaborator.value = {
+            name: '',
+            function: '',
+            description: ''
+        }
+        return
+    }
     collaboratorStore.newCollaborator(collaborator.value)
     collaborator.value = {
         name: '',
@@ -133,6 +146,16 @@ const resetAlert = () => {
     collaboratorStore.resetAlert()
 }
 
+const closeNewEditCollaborator = () => {
+    collaborator.value = {
+        name: '',
+        function: '',
+        description: ''
+    }
+    newEnabled.value = false
+    titleNewCollaborator.value = 'Novo colaborador'
+}
+
 const deleteCollaborator = (id) => {
     collaboratorStore.deleteCollaborator(id)
 }
@@ -141,10 +164,12 @@ const searchAllCollaborator = () => {
     collaboratorStore.getAllCollaborator()
 }
 
-const updateCollaborator = (data) => {
+//apenas abre o card new collaborator preparado para update
+const updateCollaborator = (data , info) => {
+    updateCollaboratorEnabled.value = true
     newEnabled.value = true
     collaborator.value = data
-    console.log(data)
+    titleNewCollaborator.value = 'Editar colaborador'
 }
 
 
