@@ -1,19 +1,23 @@
-const admin = require('../../utils/fireConfig')
+const adminfire = require('../../utils/fireConfig');
 
 class Middleware {
     async checkToken(req, res, next) {
-        if (!!!req.headers.authorization)
-            return res.json({ message: "Não autorizado" })
+        if (!req.headers.authorization) {
+            return res.status(401).json({ message: "Não autorizado: Token ausente" });
+        }
 
-        const token = req.headers.authorization.split(' ')[1]
+        const token = req.headers.authorization.split(' ')[1];
+        console.log(token);
         try {
-            const decodeValue = await admin.auth().verifyIdToken(token)
-            if (!!!decodeValue)
-                return res.json({ message: "Não autorizado" })
-            req.user = decodeValue
+            const decodeValue = await adminfire.auth().verifyIdToken(token);
+            if (!decodeValue) {
+                return res.status(401).json({ message: "Não autorizado: Token inválido" });
+            }
+            req.user = decodeValue;
             next();
         } catch (e) {
-            return res.json({ message: "Não autorizado" })
+            console.log(e);
+            return res.status(401).json({ message: "Não autorizado: Erro na verificação do token" });
         }
     }
 }

@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia'
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, onAuthStateChanged } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, onAuthStateChanged, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import router from '@/router'
 import { ref } from 'vue';
 
-
+const provider = new GoogleAuthProvider();
 
 export const useUserStore = defineStore('user', {
     state: () => ({
@@ -33,6 +33,31 @@ export const useUserStore = defineStore('user', {
         },
     },
     actions: {
+        loginGoogle() {
+            const auth = getAuth();
+            signInWithPopup(auth, provider).then((result) => {
+                // This gives you a Google Access Token. You can use it to access the Google API.
+                const credential = GoogleAuthProvider.credentialFromResult(result);
+                const token = credential.accessToken;
+                // The signed-in user info.
+                const user = result.user;
+                this.user = user;
+                router.push('/dashboard');
+            }).catch((error) => {
+                // Handle Errors here.
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                // The email of the user's account used.
+                const email = error.email;
+                // The AuthCredential type that was used.
+                const credential = GoogleAuthProvider.credentialFromError(error);
+                console.log(errorCode);
+                console.log(errorMessage);
+                console.log(email);
+                console.log(credential);
+            });
+        },
+
         checkAuth() {
             return new Promise((resolve, reject) => {
                 const auth = getAuth();

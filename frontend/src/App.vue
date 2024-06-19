@@ -47,7 +47,7 @@
     <v-app-bar :height="50">
       <v-app-bar-nav-icon @click="drawer = !drawer" v-if="islogged"></v-app-bar-nav-icon>
 
-      <v-app-bar-title>Tarefas pessoais</v-app-bar-title>
+      <v-app-bar-title>Avaliação 3</v-app-bar-title>
       <v-spacer></v-spacer>
     </v-app-bar>
 

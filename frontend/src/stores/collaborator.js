@@ -1,11 +1,18 @@
 import { defineStore } from "pinia";
 import axios from 'axios'
 import { computed, toRaw } from "vue";
+import { useUserStore } from "./user"; 
+
+const collaboratorStore = useUserStore();
+
+const token = computed(() => collaboratorStore.getUserProfile.accessToken);
+
 
 // Create an instance using the config defaults provided by the library
 const apiBackend = axios.create({
     baseURL: 'http://localhost:3005/',
     timeout: 1000,
+    headers: { 'Authorization': `Bearer ${token.value}` }
 });
 
 export const useCollaboratorStore = defineStore('collaborator', {

@@ -20,6 +20,11 @@
                                     <v-btn @click="login" color="primary" block>Entrar</v-btn>
                                 </v-col>
                             </v-row>
+                            <v-row>
+                                <v-col>
+                                    <v-btn @click="loginGoogle" color="primary" block>Entrar com Google</v-btn>
+                                </v-col>
+                            </v-row>
 
                         </v-form>
                     </v-card-text>
@@ -60,6 +65,10 @@ const alert = computed(() => {
 const login = () => {
     userStore.login(user.value)
 }
+
+const loginGoogle = () => {
+    userStore.loginGoogle()
+}   
 
 //hooks
 onUnmounted(() => {
